@@ -1,19 +1,19 @@
 defmodule SpearEventStore do
   use Spear.Client, otp_app: :eventstores_bench
 
+  alias Testcontainers.EventStoreDBContainer
+
   def start_container do
-    {:ok, container} =
-      Testcontainers.start_container(%Testcontainers.Container{
-        image: "eventstore/eventstore:latest",
-        environment: %{
-          EVENTSTORE_CLUSTER_SIZE: "1",
-          EVENTSTORE_INSECURE: "true"
-        },
-        exposed_ports: [2113, 2113]
-      })
+    esdb_config =
+      EventStoreDBContainer.new()
+      |> Testcontainers.ContainerBuilder.build()
+
+    {:ok, container} = Testcontainers.start_container(esdb_config)
 
     {:ok, pid} =
-      SpearEventStore.start_link(connection_string: "esdb://#{container.ip_address}:2113")
+      SpearEventStore.start_link(
+        connection_string: EventStoreDBContainer.connection_uri(esdb_config)
+      )
 
     %{container: container, pid: pid}
   end

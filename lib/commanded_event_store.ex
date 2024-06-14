@@ -4,7 +4,10 @@ defmodule CommandedEventStore do
   alias Testcontainers.PostgresContainer
 
   def start_container do
-    pg_config = PostgresContainer.with_image(PostgresContainer.new(), "postgres:16")
+    pg_config =
+      PostgresContainer.new()
+      |> PostgresContainer.with_image("postgres:16")
+
     {:ok, container} = Testcontainers.start_container(pg_config)
 
     es_config = [
