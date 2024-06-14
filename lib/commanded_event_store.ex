@@ -13,7 +13,7 @@ defmodule CommandedEventStore do
       database: pg_config.database,
       port: pg_config.port,
       hostname: container.ip_address,
-      pool_size: 10,
+      pool_size: 50,
       serializer: EventStore.JsonSerializer,
       schema: "public",
       column_data_type: "bytea"

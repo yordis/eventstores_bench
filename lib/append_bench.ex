@@ -17,7 +17,7 @@ defmodule AppendBench do
         "commanded - append(total_events: #{total_events}, concurrency: #{concurrency})",
         fn ->
           concurrently(concurrency, fn stream_uuid ->
-            CommandedEventStore.append_to_stream(stream_uuid, 0, events)
+            :ok = CommandedEventStore.append_to_stream(stream_uuid, 0, events)
           end)
         end
       )
@@ -25,7 +25,7 @@ defmodule AppendBench do
         "spear - append(total_events: #{total_events}, concurrency: #{concurrency})",
         fn ->
           concurrently(concurrency, fn stream_uuid ->
-            SpearEventStore.append(spear_events, stream_uuid, expect: :empty)
+            :ok = SpearEventStore.append(spear_events, stream_uuid, expect: :empty)
           end)
         end
       )
