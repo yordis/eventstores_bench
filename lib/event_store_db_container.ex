@@ -5,7 +5,6 @@ defmodule Testcontainers.EventStoreDBContainer do
   """
 
   alias Testcontainers.EventStoreDBContainer
-  alias Testcontainers.LogWaitStrategy
   alias Testcontainers.ContainerBuilder
   alias Testcontainers.Container
 

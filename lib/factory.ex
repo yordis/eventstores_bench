@@ -2,6 +2,7 @@ defmodule Factory do
   def create_event(event_id, number \\ 1) do
     correlation_id = UUID.uuid4()
     causation_id = UUID.uuid4()
+    event_id = event_id || UUID.uuid4()
 
     %EventStore.EventData{
       event_id: event_id,

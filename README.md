@@ -12,4 +12,5 @@ A benchmark comparing multiple Production-Ready Event Stores.
 ```bash
 mix run -e "AppendBench.run()"
 mix run -e "ReadBench.run()"
+mix run -e "SubscribeBench.run()"
 ```
