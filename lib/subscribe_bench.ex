@@ -43,7 +43,7 @@ defmodule SubscribeBench do
       |> Factory.create_events()
       |> Factory.to_spear_events()
 
-    :ok = SpearEventStore.append(events, stream_uuid, expect: :any)
+    :ok = SpearEventStore.append(events, stream_uuid, expect: :any, timeout: :infinity)
   end
 
   defp spear_subscribe(_stream_uuid, _index, total_events) do
@@ -103,6 +103,8 @@ defmodule SubscribeBench do
     append_tasks =
       Enum.map(1..concurrency, fn _ -> Task.async(fn -> append_callback.(stream_uuid) end) end)
 
-    Task.await_many(subs_tasks ++ append_tasks, :infinity)
+    tasks = subs_tasks ++ append_tasks
+
+    Task.await_many(tasks ++ append_tasks, :infinity)
   end
 end
