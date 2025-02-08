@@ -8,7 +8,7 @@ defmodule ReadBench do
 
     total_events = 15
     events = Factory.create_events(total_events)
-    spear_events = Factory.to_spear_events(events)
+    spear_events = Factory.create_events(total_events, %{transform_event: &Factory.to_spear_event/1})
     stream_uuid = UUID.uuid4()
 
     :ok = CommandedEventStore.append_to_stream(stream_uuid, 0, events)

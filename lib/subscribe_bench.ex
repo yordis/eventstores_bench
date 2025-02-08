@@ -38,10 +38,7 @@ defmodule SubscribeBench do
   end
 
   defp spear_append(stream_uuid, total_events) do
-    events =
-      total_events
-      |> Factory.create_events()
-      |> Factory.to_spear_events()
+    events = Factory.create_events(total_events, %{transform_event: &Factory.to_spear_event/1})
 
     :ok = SpearEventStore.append(events, stream_uuid, expect: :any, timeout: :infinity)
   end

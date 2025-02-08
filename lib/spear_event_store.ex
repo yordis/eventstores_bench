@@ -19,7 +19,7 @@ defmodule SpearEventStore do
   end
 
   def stop_container(%{container: container, pid: pid}) do
-    Testcontainers.stop_container(container.container_id)
     Process.exit(pid, :normal)
+    Testcontainers.stop_container(container.container_id)
   end
 end

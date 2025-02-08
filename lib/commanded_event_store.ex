@@ -30,7 +30,7 @@ defmodule CommandedEventStore do
   end
 
   def stop_container(%{container: container, pid: pid}) do
+    CommandedEventStore.stop(pid)
     Testcontainers.stop_container(container.container_id)
-    Process.exit(pid, :normal)
   end
 end

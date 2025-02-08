@@ -5,18 +5,19 @@ defmodule AppendBench do
     {:ok, _} = Testcontainers.start_link()
     commanded_container = CommandedEventStore.start_container()
     spear_container = SpearEventStore.start_container()
-
     total_events = 15
-    events = Factory.create_events(total_events)
-    spear_events = Factory.to_spear_events(events)
 
     [1, 5, 10, 15, 20, 30, 50]
-    |> Enum.reduce(%{}, fn concurrency, acc ->
+    |> Enum.map(fn concurrency ->
+      %{concurrency: concurrency}
+    end)
+    |> Enum.reduce(%{}, fn %{concurrency: concurrency}, acc ->
       acc
       |> Map.put_new(
         "commanded - append(total_events: #{total_events}, concurrency: #{concurrency})",
         fn ->
           concurrently(concurrency, fn stream_uuid ->
+            events = Factory.create_events(total_events)
             :ok = CommandedEventStore.append_to_stream(stream_uuid, 0, events)
           end)
         end
@@ -25,6 +26,7 @@ defmodule AppendBench do
         "spear - append(total_events: #{total_events}, concurrency: #{concurrency})",
         fn ->
           concurrently(concurrency, fn stream_uuid ->
+            spear_events = Factory.create_events(total_events, %{transform_event: &Factory.to_spear_event/1})
             :ok = SpearEventStore.append(spear_events, stream_uuid, expect: :empty)
           end)
         end
