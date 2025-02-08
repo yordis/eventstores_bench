@@ -24,7 +24,7 @@ defmodule EventstoresBench.MixProject do
       {:eventstore, "1.4.7"},
       {:spear, "1.4.1"},
       {:benchee, "1.3.1"},
-      {:testcontainers, "1.11.8"},
+      {:testcontainers, "1.10.3"},
       {:benchee_html, "1.0.1"}
     ]
   end
